@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"/>
+
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="?actionBarSize"
+         android:background="@color/colorPrime"
+         android:orientation="horizontal"
+         android:layout_weight="1"
+         android:gravity="right"/>
+
+         <ImageButton
+             android:layout_width="50dp"
+             android:layout_height="match_parent"
+             android:background="@color/colorPrime"
+             android:src="@drawable/baseline_arrow_back_24"
+             android:onClick="finishPaint"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrime"
+            android:src="@drawable/baseline_share_24"
+            android:onClick="shareApp"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrime"
+            android:src="@drawable/baseline_home_24"
+            android:onClick="showFiles"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrime"
+            android:src="@drawable/baseline_download_24"
+            android:onClick="saveFiles"/>
+
+</LinearLayout>
