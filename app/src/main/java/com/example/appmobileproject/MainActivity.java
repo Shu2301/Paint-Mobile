@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
         List<ToolsItem> result = new ArrayList<>();
 
         result.add(new ToolsItem(R.drawable.baseline_brush_24, "brush"));
-        result.add(new ToolsItem(R.drawable.baseline_brush_24, "eraser"));
+        result.add(new ToolsItem(R.drawable.eraser, "eraser"));
         result.add(new ToolsItem(R.drawable.baseline_palette_24, "color"));
-        result.add(new ToolsItem(R.drawable.baseline_brush_24, "background"));
+        result.add(new ToolsItem(R.drawable.palleter, "background"));
         result.add(new ToolsItem(R.drawable.baseline_undo_24, "return"));
 
         return result;
