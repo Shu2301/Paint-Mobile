@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.appmobileproject.Interface.ToolsListener;
-import com.example.appmobileproject.Model.ToolsItem;
+import com.example.appmobileproject.model.ToolsItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Adapters.ToolsAdapters;
+import com.example.appmobileproject.Adapters.ToolsAdapters;
 
 public class MainActivity extends AppCompatActivity implements ToolsListener {
 
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
     }
 
     public void finishPaint(View view) {
+
         finish();
     }
 
