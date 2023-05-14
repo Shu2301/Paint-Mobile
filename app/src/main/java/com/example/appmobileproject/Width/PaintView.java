@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.NinePatch;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -147,7 +149,7 @@ public class PaintView extends View {
             mY = y;
             mX = x;
 
-            mCanvas.drawPatch(mPath, mPaint);
+            mCanvas.drawPath(mPath, mPaint);
             invalidate();
         }
 
@@ -158,11 +160,12 @@ public class PaintView extends View {
         mY = y;
     }
 
-    public Bitmap getBitmp(){
-        this.setDrawingCacheEnabled(true);
-        this.buildDrawingCache();
-        Bitmap bitmap = Bitmap.createBitmap(this.getDrawingCache());
-        this.setDrawingCacheEnabled(false);
+    Bitmap getBitmapFromView(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(
+                view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888
+        );
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
         return bitmap;
     }
 }
