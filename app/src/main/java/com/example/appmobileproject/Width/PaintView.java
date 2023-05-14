@@ -16,8 +16,8 @@ import java.util.ArrayList;
 public class PaintView extends View {
 
     private Bitmap btmBackground, btmView;
-    private Paint mPaint = new Paint();
-    private Path mPath = new Path();
+    private final Paint mPaint = new Paint();
+    private final Path mPath = new Path();
     private int colorBackground, sizeBrush, sizeEraser;
     private float mX;
     private float mY;
