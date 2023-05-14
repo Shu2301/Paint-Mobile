@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.appmobileproject.Interface.ToolsListener;
-import com.example.appmobileproject.model.ToolsItem;
+import com.example.appmobileproject.Model.ToolsItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.appmobileproject.Adapters.ToolsAdapters;
+import Adapters.ToolsAdapters;
 
 public class MainActivity extends AppCompatActivity implements ToolsListener {
 
@@ -40,14 +40,13 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
         result.add(new ToolsItem(R.drawable.baseline_brush_24, "brush"));
         result.add(new ToolsItem(R.drawable.eraser, "eraser"));
         result.add(new ToolsItem(R.drawable.baseline_palette_24, "color"));
-        result.add(new ToolsItem(R.drawable.palleter, "background"));
+        result.add(new ToolsItem(R.drawable.paint, "background"));
         result.add(new ToolsItem(R.drawable.baseline_undo_24, "return"));
 
         return result;
     }
 
     public void finishPaint(View view) {
-
         finish();
     }
 

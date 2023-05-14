@@ -6,18 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-    
-    <com.example.appmobileproject.Width.PaintView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/paint_view"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrime"
-        android:id="@+id/recycler_view_tools"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:ignore="UselessLeaf" />
+
 
      <LinearLayout
          android:layout_width="match_parent"
@@ -32,7 +27,6 @@
              android:onClick="finishPaint"
              android:src="@drawable/baseline_arrow_back_24"
              tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
 
          <LinearLayout
              android:layout_width="0dp"

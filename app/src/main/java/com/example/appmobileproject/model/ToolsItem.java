@@ -1,4 +1,4 @@
-package com.example.appmobileproject.model;
+package com.example.appmobileproject.Model;
 
 public class ToolsItem {
     private int icone;
@@ -14,12 +14,10 @@ public class ToolsItem {
     }
 
     public String getName() {
-
         return name;
     }
 
     public int getIcone() {
-
         return 0;
     }
 }
