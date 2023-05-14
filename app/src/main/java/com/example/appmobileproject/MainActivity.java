@@ -13,7 +13,7 @@ import com.example.appmobileproject.Model.ToolsItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import Adapters.ToolsAdapters;
+import Adapters.ToolsAdapter;
 
 public class MainActivity extends AppCompatActivity implements ToolsListener {
 
@@ -21,16 +21,14 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initTools();
-
     }
 
     private void initTools() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view_tools);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL, false));
-        ToolsAdapters toolsAdapters = new ToolsAdapters(loadTools(), this);
+        ToolsAdapter toolsAdapters = new ToolsAdapter(loadTools(), this);
         recyclerView.setAdapter(toolsAdapters);
     }
 

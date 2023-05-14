@@ -9,10 +9,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+<<<<<<< Updated upstream
         android:layout_height="match_parent"
         android:layout_weight="1"
         tools:ignore="UselessLeaf" />
 
+=======
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="1"
+        android:columnCount="5">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrime"
+            android:id="@+id/recycler_view_tools" />
+    </GridLayout>
+>>>>>>> Stashed changes
 
      <LinearLayout
          android:layout_width="match_parent"

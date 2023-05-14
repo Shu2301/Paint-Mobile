@@ -16,13 +16,15 @@ import com.example.appmobileproject.viewHolder.ToolsViewHolder;
 
 import java.util.List;
 
-public class ToolsAdapters extends RecyclerView.Adapter<ToolsViewHolder> {
+
+public class ToolsAdapter extends RecyclerView.Adapter<ToolsViewHolder> {
+
 
     private List<ToolsItem> toolsItemList;
     private int selected = -1;
     private ToolsListener listener;
 
-    public ToolsAdapters(List<ToolsItem> toolsItemList, ToolsListener listener) {
+    public ToolsAdapter(List<ToolsItem> toolsItemList, ToolsListener listener) {
         this.toolsItemList = toolsItemList;
         this.listener = listener;
     }
@@ -30,7 +32,13 @@ public class ToolsAdapters extends RecyclerView.Adapter<ToolsViewHolder> {
     @NonNull
     @Override
     public ToolsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+<<<<<<< HEAD:app/src/main/java/Adapters/ToolsAdapters.java
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tools_item,parent, false);
+=======
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tools_item, parent, false);
+
+>>>>>>> 7473c23acca1690ac12dcbab3b0b7ec53e69f351:app/src/main/java/Adapters/ToolsAdapter.java
         return new ToolsViewHolder(view);
     }
 
@@ -40,6 +48,7 @@ public class ToolsAdapters extends RecyclerView.Adapter<ToolsViewHolder> {
         holder.icone.setImageResource(toolsItemList.get(position).getIcone());
 
         holder.setViewOnClick(new ViewOnClick() {
+
             @Override
             public void onClick(int pos) {
                 selected = pos;
@@ -57,6 +66,6 @@ public class ToolsAdapters extends RecyclerView.Adapter<ToolsViewHolder> {
     }
     @Override
     public int getItemCount() {
-        return 0;
+        return toolsItemList.size();
     }
 }
