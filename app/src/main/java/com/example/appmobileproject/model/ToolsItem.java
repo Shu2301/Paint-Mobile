@@ -1,4 +1,4 @@
-package com.example.appmobileproject.Model;
+package com.example.appmobileproject.model;
 
 public class ToolsItem {
     private int icone;

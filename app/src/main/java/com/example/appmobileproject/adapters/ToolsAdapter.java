@@ -1,4 +1,4 @@
-package Adapters;
+package com.example.appmobileproject.adapters;
 
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appmobileproject.Interface.ToolsListener;
 import com.example.appmobileproject.Interface.ViewOnClick;
-import com.example.appmobileproject.Model.ToolsItem;
+import com.example.appmobileproject.model.ToolsItem;
 import com.example.appmobileproject.R;
 import com.example.appmobileproject.viewHolder.ToolsViewHolder;
 
@@ -59,6 +59,7 @@ public class ToolsAdapter extends RecyclerView.Adapter<ToolsViewHolder> {
         }
 
     }
+
     @Override
     public int getItemCount() {
         return toolsItemList.size();

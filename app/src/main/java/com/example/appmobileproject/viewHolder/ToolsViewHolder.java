@@ -1,6 +1,5 @@
 package com.example.appmobileproject.viewHolder;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +28,7 @@ public class ToolsViewHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.tools_name);
 
         itemView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 viewOnClick.onClick(getBindingAdapterPosition());
