@@ -11,11 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:rowCount="1"
         android:columnCount="5">
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,6 +45,7 @@
              android:orientation="horizontal"
              android:layout_weight="1"
              android:gravity="right">
+
              <ImageButton
                  android:layout_width="50dp"
                  android:layout_height="match_parent"
@@ -66,6 +69,7 @@
                  android:onClick="saveFiles"
                  android:src="@drawable/baseline_download_24"
                  tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck"/>
+
          </LinearLayout>
      </LinearLayout>
 </LinearLayout>

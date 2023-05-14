@@ -32,7 +32,6 @@ public class ToolsAdapter extends RecyclerView.Adapter<ToolsViewHolder> {
     @NonNull
     @Override
     public ToolsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tools_item, parent, false);
 
         return new ToolsViewHolder(view);
@@ -40,7 +39,6 @@ public class ToolsAdapter extends RecyclerView.Adapter<ToolsViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ToolsViewHolder holder, int position) {
-
         holder.name.setText(toolsItemList.get(position).getName());
         holder.icone.setImageResource(toolsItemList.get(position).getIcone());
 
@@ -55,14 +53,12 @@ public class ToolsAdapter extends RecyclerView.Adapter<ToolsViewHolder> {
         });
 
         if (selected == position) {
-
             holder.name.setTypeface(holder.name.getTypeface(), Typeface.BOLD);
         }else {
             holder.name.setTypeface(Typeface.DEFAULT);
         }
 
     }
-
     @Override
     public int getItemCount() {
         return toolsItemList.size();
