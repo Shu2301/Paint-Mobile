@@ -9,6 +9,10 @@ public class ToolsItem {
         this.name = name;
     }
 
+    public int getIcone() {
+        return icone;
+    }
+
     public void setIcone(int icone) {
         this.icone = icone;
     }
@@ -17,7 +21,7 @@ public class ToolsItem {
         return name;
     }
 
-    public int getIcone() {
-        return 0;
+    public void setName(String name) {
+        this.name = name;
     }
 }
