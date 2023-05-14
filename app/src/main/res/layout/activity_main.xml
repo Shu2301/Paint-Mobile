@@ -9,12 +9,6 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-<<<<<<< Updated upstream
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:ignore="UselessLeaf" />
-
-=======
         android:layout_height="0dp"
         android:layout_weight="1" />
     <GridLayout
@@ -28,7 +22,6 @@
             android:background="@color/colorPrime"
             android:id="@+id/recycler_view_tools" />
     </GridLayout>
->>>>>>> Stashed changes
 
      <LinearLayout
          android:layout_width="match_parent"
