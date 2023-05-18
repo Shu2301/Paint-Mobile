@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appmobileproject.Interface.ToolsListener;
-import com.example.appmobileproject.Width.PaintView;
+import com.example.appmobileproject.widget.PaintView;
 import com.example.appmobileproject.adapters.ToolsAdapter;
 import com.example.appmobileproject.common.common;
 import com.example.appmobileproject.model.ToolsItem;
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
         colorBrush = Color.BLACK;
 
         mPaintView = findViewById(R.id.paint_view);
+        eraserSize = brushSize = 12;
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view_tools);
         recyclerView.setHasFixedSize(true);

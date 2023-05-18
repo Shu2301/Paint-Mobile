@@ -1,4 +1,4 @@
-package com.example.appmobileproject.Width;
+package com.example.appmobileproject.widget;
 
 import static android.provider.MediaStore.Images.Media.getBitmap;
 
@@ -37,8 +37,9 @@ public class PaintView extends View {
     private int xCenter, yCenter;
 
 
-    public PaintView(Context context, AttributeSet attr) {
-        super(context, attr);
+    public PaintView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+
 
         init();
     }
@@ -177,6 +178,7 @@ public class PaintView extends View {
                 addLastAction(getBitmap());
                 break;
         }
+
         return true;
     }
 
