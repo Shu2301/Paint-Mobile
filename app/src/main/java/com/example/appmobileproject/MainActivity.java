@@ -1,5 +1,6 @@
 package com.example.appmobileproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
     PaintView mPaintView;
     int colorBackground, colorBrush;
     int brushSize,eraserSize;
-    private Context ActivityCompat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,18 +99,18 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
         String bodyText = "http://play.google.com/store/apps/details?id="+getPackageName();
         intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.app_name));
         intent.putExtra(Intent.EXTRA_TEXT,bodyText);
-        startActivities(Intent.createChooser(intent, "share this app"));
+        startActivity(Intent.createChooser(intent, "share this app"));
     }
 
     public void showFiles(View view) {
-        startActivities(new Intent[this, ListFileAct.class]);
+        startActivity(new Intent(this, ListFileAct.class));
     }
 
     public void saveFiles(View view) {
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if(androidx.core.app.ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         != PackageManager.PERMISSION_GRANTED){
 
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION);
+            requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION);
 
         }else {
             saveBitmap();
@@ -117,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
     }
 
     private void saveBitmap() {
-        Bitmap bitmap = mPaintView.getBitmap();
+        Bitmap bitmap = mPaintView.getBitmapFromView();
         String file_name = UUID.randomUUID() + ".png";
-        File folder = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)+ File.separator+getString(R.id.app_name));
+        File folder = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)+ File.separator+getString(R.string.app_name));
 
         if(!folder.exists()){
             folder.mkdir();
@@ -178,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
         startActivityForResult(Intent.createChooser(intent, "Select picture"),PICK_IMAGE);
     }
 
+    @SuppressLint("Range")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 

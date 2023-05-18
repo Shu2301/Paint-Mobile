@@ -175,7 +175,7 @@ public class PaintView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 touchUp();
-                addLastAction(getBitmap());
+                addLastAction(getBitmapFromView());
                 break;
         }
 
@@ -207,11 +207,11 @@ public class PaintView extends View {
         mY = y;
     }
 
-    Bitmap getBitmapFromView(View view) {
+    public Bitmap getBitmapFromView() {
         Bitmap bitmap = Bitmap.createBitmap(
-                view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+                this.getWidth(), this.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
+        this.draw(canvas);
         return bitmap;
     }
 

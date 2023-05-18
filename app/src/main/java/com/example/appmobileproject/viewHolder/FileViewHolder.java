@@ -34,8 +34,8 @@ public class FileViewHolder extends RecyclerView.ViewHolder {
 
         itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
-            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                ContextMenu.add(0, 0, getAdapterPosition(), common.DELETE);
+            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+                contextMenu.add(0, 0, getBindingAdapterPosition(), common.DELETE);
             }
         });
     }

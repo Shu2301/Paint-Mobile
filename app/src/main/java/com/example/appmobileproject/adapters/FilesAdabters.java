@@ -20,13 +20,15 @@ import java.util.List;
 
 public class FilesAdabters extends RecyclerView.Adapter<FileViewHolder> {
 
+
     private Context mContext;
     private List<File> fileList;
 
-    public FilesAdabters(Context mContext, String[] fileList){
+    public FilesAdabters(Context mContext, List<File> fileList) {
         this.mContext = mContext;
         this.fileList = fileList;
     }
+
 
     @NonNull
     @Override

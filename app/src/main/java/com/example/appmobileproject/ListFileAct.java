@@ -39,7 +39,7 @@ public class ListFileAct extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
         fileList = loadFile();
-        FilesAdabters filesAdabters = new FilesAdabters(this,fileList());
+        FilesAdabters filesAdabters = new FilesAdabters(this,loadFile());
         recyclerView.setAdapter(filesAdabters);
     }
 
