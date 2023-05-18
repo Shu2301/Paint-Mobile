@@ -1,6 +1,5 @@
 package com.example.appmobileproject.widget;
 
-import static android.provider.MediaStore.Images.Media.getBitmap;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,8 +13,6 @@ import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
-import androidx.annotation.Nullable;
 
 import com.example.appmobileproject.R;
 
@@ -31,7 +28,7 @@ public class PaintView extends View {
     private Canvas mCanvas;
     private final int DIFFERENCE_SPACE = 4;
     private ArrayList<Bitmap> listAction = new ArrayList<>();
-    private int leftImage = 50,topImage = 50;
+    private int leftImage = 50, topImage = 50;
     public static boolean toMove = false;
     private float refX, refY;
     private int xCenter, yCenter;
@@ -39,13 +36,11 @@ public class PaintView extends View {
 
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-
         init();
     }
 
     private void init() {
-        sizeEraser = sizeBrush = 12;
+        sizeEraser = sizeBrush = 3;
         colorBackground = Color.WHITE;
 
         mPaint.setColor(Color.BLACK);
@@ -60,15 +55,15 @@ public class PaintView extends View {
     }
 
     private float toPx(int sizeBrush) {
-        return sizeBrush*(getResources().getDisplayMetrics().density);
+        return sizeBrush * (getResources().getDisplayMetrics().density);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        btmBackground = Bitmap.createBitmap(w,h, Bitmap.Config.ARGB_8888);
-        btmView = Bitmap.createBitmap(w,h, Bitmap.Config.ARGB_8888);
+        btmBackground = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        btmView = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(btmView);
     }
 
@@ -79,59 +74,56 @@ public class PaintView extends View {
         canvas.drawColor(colorBackground);
         canvas.drawBitmap(btmBackground, 0, 0, null);
 
-        if(image != null && toMove) {
+        if (image != null && toMove) {
             canvas.drawBitmap(image, leftImage, topImage, null);
-            xCenter = leftImage + image.getWidth()/2 - captureImage.getWidth()/2;
-            yCenter = topImage + image.getHeight()/2 - captureImage.getHeight()/2;
+            xCenter = leftImage + image.getWidth() / 2 - captureImage.getWidth() / 2;
+            yCenter = topImage + image.getHeight() / 2 - captureImage.getHeight() / 2;
             canvas.drawBitmap(captureImage, xCenter, yCenter, null);
         }
         canvas.drawBitmap(btmView, 0, 0, null);
     }
 
-    public void setColorBackground(int color){
+    public void setColorBackground(int color) {
         colorBackground = color;
         invalidate();
     }
 
-    public void setSizeBrush(int s){
+    public void setSizeBrush(int s) {
         sizeBrush = s;
         mPaint.setStrokeWidth(toPx(sizeBrush));
     }
 
-    public void setBrushColor(int color){
+    public void setBrushColor(int color) {
         mPaint.setColor(color);
     }
 
-    public void setSizeEraser(int s){
+    public void setSizeEraser(int s) {
         sizeEraser = s;
         mPaint.setStrokeWidth(toPx(sizeEraser));
     }
 
-    public void enableEraser(){
+    public void enableEraser() {
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
 
-    public void desableEraser(){
+    public void desableEraser() {
         mPaint.setXfermode(null);
         mPaint.setShader(null);
         mPaint.setMaskFilter(null);
     }
 
-    public void addLastAction(Bitmap bitmap){
+    public void addLastAction(Bitmap bitmap) {
         listAction.add(bitmap);
     }
 
-    public void returnLastAction(){
-        if(listAction.size() > 0){
+    public void returnLastAction() {
+        if (listAction.size() > 0) {
 
             listAction.remove(listAction.size() - 1);
 
-            if(listAction.size() > 0){
-
+            if (listAction.size() > 0) {
                 btmView = listAction.get(listAction.size() - 1);
-
-            }
-            else {
+            } else {
                 btmView = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
             }
 
@@ -146,15 +138,15 @@ public class PaintView extends View {
         float x = event.getX();
         float y = event.getY();
 
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                touchStart(x,y);
+                touchStart(x, y);
                 refY = y;
                 refX = x;
 
-                if(toMove){
-                    if(refX >= xCenter && refX < xCenter + captureImage.getWidth()
-                    && refY >= yCenter && refY < yCenter + captureImage.getHeight()){
+                if (toMove) {
+                    if (refX >= xCenter && refX < xCenter + captureImage.getWidth()
+                            && refY >= yCenter && refY < yCenter + captureImage.getHeight()) {
                         Canvas newCanvas = new Canvas(btmBackground);
                         newCanvas.drawBitmap(image, leftImage, topImage, null);
                         invalidate();
@@ -162,8 +154,8 @@ public class PaintView extends View {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(!toMove)
-                    touchMove(x,y);
+                if (!toMove)
+                    touchMove(x, y);
                 else {
                     float nX = event.getX();
                     float nY = event.getY();
@@ -187,11 +179,14 @@ public class PaintView extends View {
     }
 
     private void touchMove(float x, float y) {
-        float dx = Math.abs(x-mX);
-        float dy = Math.abs(y-mY);
+        float dx = Math.abs(x - mX);
+        float dy = Math.abs(y - mY);
 
-        if(dx >= DIFFERENCE_SPACE || dy >= DIFFERENCE_SPACE){
-            mPath.quadTo(x,y, (x+mX)/2, (y+mY)/2);
+        if (dx >= DIFFERENCE_SPACE || dy >= DIFFERENCE_SPACE) {
+            float cX = (x + mX) / 2;
+            float cY = (y + mY) / 2;
+
+            mPath.quadTo(mX, mY, cX, cY);
 
             mY = y;
             mX = x;
@@ -199,10 +194,11 @@ public class PaintView extends View {
             mCanvas.drawPath(mPath, mPaint);
             invalidate();
         }
-
     }
+
     private void touchStart(float x, float y) {
-        mPath.moveTo(x,y);
+        mPath.reset();
+        mPath.moveTo(x, y);
         mX = x;
         mY = y;
     }
@@ -217,7 +213,7 @@ public class PaintView extends View {
 
     public void setImage(Bitmap bitmap) {
         toMove = true;
-        image = Bitmap.createScaledBitmap(bitmap, getWidth()/2, getHeight()/2, true);
+        image = Bitmap.createScaledBitmap(bitmap, getWidth() / 2, getHeight() / 2, true);
         invalidate();
     }
 }
