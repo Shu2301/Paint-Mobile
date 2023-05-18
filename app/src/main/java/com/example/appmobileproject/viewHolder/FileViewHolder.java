@@ -28,7 +28,7 @@ public class FileViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewOnClick.onClick(getAdapterPosition());
+                viewOnClick.onClick(getBindingAdapterPosition());
             }
         });
 
