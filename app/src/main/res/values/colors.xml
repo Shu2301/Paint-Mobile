@@ -9,5 +9,9 @@
     <color name="colorPrimeDark">#ffffff</color>
     <color name="colorAccent">#D81B60</color>
     <color name="gris_light">#cccccc</color>
+    <color name="colorBackground">#999999</color>
+    <color name="colorToolBar">#555555</color>
+    <color name="colorButton">#717171</color>
+    <color name="white">#ffffff</color>
 
 </resources>
