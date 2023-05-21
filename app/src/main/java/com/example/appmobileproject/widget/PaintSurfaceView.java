@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -26,7 +27,7 @@ import com.example.appmobileproject.R;
 
 import java.util.ArrayList;
 
-public class PaintSurfaceView extends Surface implements SurfaceHolder.Callback,Runnable {
+public class PaintSurfaceView extends SurfaceView implements SurfaceHolder.Callback,Runnable {
 
     private Bitmap btmBackground, btmView, image, captureImage, originalImage, rotateImage;
     private Paint mPaint = new Paint();
@@ -327,7 +328,7 @@ public class PaintSurfaceView extends Surface implements SurfaceHolder.Callback,
 
     public void startDrawThread() {
         if(surfaceReady && drawThread == null){
-            drawThread = new Thread((this,"Draw thread"));
+            drawThread = new Thread(this,"Draw thread");
             drawingActive = true;
             drawThread.start();
         }
