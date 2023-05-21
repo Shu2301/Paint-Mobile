@@ -1,6 +1,8 @@
 package com.example.appmobileproject;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,8 +12,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appmobileproject.Interface.ToolsListener;
+import com.example.appmobileproject.widget.PaintSurfaceView;
 import com.example.appmobileproject.widget.PaintView;
 import com.example.appmobileproject.adapters.ToolsAdapter;
 import com.example.appmobileproject.common.common;
@@ -40,6 +45,9 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOError;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
@@ -49,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
 
     private static final int REQUEST_PERMISSION = 1001;
     private static final int PICK_IMAGE = 1000;
-    PaintView mPaintView;
+    private static final int REQUEST_FOR_GET_IMAGE_FROM_GALLERY = 1002;
+    PaintSurfaceView mPaintView;
     int colorBackground, colorBrush;
     int brushSize,eraserSize;
 
@@ -58,6 +67,22 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initTools();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mPaintView.startDrawThread();
+    }
+
+    @Override
+    protected void onPause() {
+        mPaintView.stopDrawThread();
+        super.onPause();
+    }
+
+    protected void onDestroy(){
+        super.onDestroy();
     }
 
     private void initTools() {
@@ -113,33 +138,76 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
             requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION);
 
         }else {
-            saveBitmap();
+            try {
+                saveBitmap();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void saveBitmap() {
+    private void saveBitmap() throws IOException {
         Bitmap bitmap = mPaintView.getBitmapFromView();
         String file_name = UUID.randomUUID() + ".png";
-        File folder = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)+ File.separator+getString(R.string.app_name));
+        OutputStream outputStream;
+        boolean saved;
+        File folder;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            folder = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)+ File.separator+getString(R.string.app_name));
+        }else {
+            folder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ File.separator+getString(R.string.app_name));
+        }
 
         if(!folder.exists()){
             folder.mkdir();
         }
+        File image = new File(folder+File.separator+file_name);
+        Uri imageUri = Uri.fromFile(image);
+        outputStream = new FileOutputStream(image);
+        saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
 
-        try{
-            FileOutputStream fileOutputStream = new FileOutputStream(folder+File.separator+file_name);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-            Toast.makeText(this, "picture save", Toast.LENGTH_SHORT).show();
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            ContentResolver resolver = getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, file_name);
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES+File.separator+getString(R.string.app_name));
+            Uri uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
+            outputStream = resolver.openOutputStream(uri);
+            saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        }else {
+            sendPictureToGallery(imageUri);
         }
+
+        if(saved)
+            Toast.makeText(this, "picture save", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this, "picture not save", Toast.LENGTH_SHORT).show();
+        outputStream.flush();
+        outputStream.close();
+
+    }
+
+    private void sendPictureToGallery(Uri imageUri) {
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(imageUri);
+        sendBroadcast(intent);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if(requestCode == REQUEST_PERMISSION && grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            saveBitmap();
+        if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            if(requestCode == REQUEST_PERMISSION) {
+                try {
+                    saveBitmap();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (requestCode == REQUEST_FOR_GET_IMAGE_FROM_GALLERY) {
+                getImage();
+            }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
@@ -168,6 +236,10 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
                 updateColor(name);
                 break;
             case common.IMAGE:
+                if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                !=PackageManager.PERMISSION_GRANTED){
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_GET_IMAGE_FROM_GALLERY);
+                }else
                 getImage();
                 break;
         }
@@ -184,6 +256,16 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         if(requestCode == PICK_IMAGE && data != null && resultCode == RESULT_OK){
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                try {
+                    ParcelFileDescriptor fileDescriptor = getContentResolver().openFileDescriptor(data.getData(),"r");
+                    Bitmap bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor.getFileDescriptor());
+                    mPaintView.setImage(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
             Uri pickedImage = data.getData();
             String[] filePath = {MediaStore.Images.Media.DATA};
             Cursor cursor = getContentResolver().query(pickedImage,filePath,null, null,null);
