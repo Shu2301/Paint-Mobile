@@ -19,5 +19,16 @@
         <item name="android:screenOrientation">portrait</item>
     </style>
     
+    <style name="CustomSeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:thumb">@drawable/custom_thumb</item>
+        <item name="android:progressDrawable">@drawable/seekbar_background</item>
+    </style>
+
+    <style name="CircleButtonShape" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+
     <style name="AppMobileProject.Overplay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 </resources>
