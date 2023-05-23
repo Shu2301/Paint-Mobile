@@ -1,5 +1,6 @@
 package com.example.appmobileproject;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.MenuItem;
@@ -45,7 +46,12 @@ public class ListFileAct extends AppCompatActivity {
 
     private List<File> loadFile() {
         ArrayList<File> inFiles = new ArrayList<>();
-        File parentDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)+File.separator+getString(R.string.app_name));
+        File parentDir;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            parentDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)+File.separator+getString(R.string.app_name));
+        }else {
+            parentDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+File.separator+getString(R.string.app_name));
+        }
         File[] files = parentDir.listFiles();
 
         for (File file : files) {

@@ -1,9 +1,11 @@
 package com.example.appmobileproject;
 
 
+
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 
 import android.util.Log;
@@ -48,6 +51,7 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
     private ImageView sizeView;
 
     PaintView mPaintView;
+
     int colorBackground, colorBrush;
     int brushSize,eraserSize;
     private int hSizeView, wSizeView;
@@ -113,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
 //    protected void onDestroy(){
 //        super.onDestroy();
 //    }
-
 
 
     private void initTools() {
@@ -177,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
     }
 
     private void saveBitmap() throws IOException{
+
         Bitmap bitmap = mPaintView.getBitmapFromView();
         String file_name = UUID.randomUUID() + ".png";
         OutputStream outputStream;
@@ -187,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
         }else {
             folder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ File.separator+getString(R.string.app_name));
         }
+
         if(!folder.exists()){
             folder.mkdirs();
         }
@@ -225,10 +231,12 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
                     // Media scan is complete, you can perform any additional actions here
                 }
         );
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
 
         if( grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             if(requestCode == REQUEST_PERMISSION){
