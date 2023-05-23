@@ -62,7 +62,6 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity implements ToolsListener {
 
     private static final int REQUEST_PERMISSION = 1001;
-//    private static final int PICK_IMAGE = 1000;
     private static final int REQUEST_FOR_GET_IMAGE_FROM_GALLERY = 1002;
 
     private TextView statusNumber;
@@ -262,19 +261,24 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
                 mPaintView.desableEraser();
                 mPaintView.invalidate();
                 showDialogSize(false);
+                Toast.makeText(this, "brush", Toast.LENGTH_SHORT).show();
                 break;
             case common.ERASER:
                 mPaintView.enableEraser();
                 showDialogSize(true);
+                Toast.makeText(this, "eraser", Toast.LENGTH_SHORT).show();
                 break;
             case common.RETURN:
                 mPaintView.returnLastAction();
+                Toast.makeText(this, "return", Toast.LENGTH_SHORT).show();
                 break;
             case common.BACKGROUND:
                 updateColor(name);
+                Toast.makeText(this, "background", Toast.LENGTH_SHORT).show();
                 break;
             case common.COLORS:
                 updateColor(name);
+                Toast.makeText(this, "color", Toast.LENGTH_SHORT).show();
                 break;
             case common.IMAGE:
                 if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -282,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_GET_IMAGE_FROM_GALLERY);
                 }else
                 getImage();
+                Toast.makeText(this, "add image", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -352,28 +357,25 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
             }
         });
 
-        if (isEraser){
-            seekBar.setMax(999);
-            statusNumber.setText(eraserSize + ".0");
-        }else{
-            seekBar.setMax(29);
-            statusNumber.setText(brushSize + ".0");
-        }
+
+        // initial value of seekbar
+        seekBar.setMax(99);
+        statusNumber.setText(brushSize + " px");
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                sizeView.setVisibility(View.VISIBLE);
+//                sizeView.setVisibility(View.VISIBLE);
                 if(isEraser){
                     hSizeView = wSizeView = eraserSize = i + 1;
-                    statusNumber.setText(eraserSize + ".0");
+                    statusNumber.setText(eraserSize + " px");
                     mPaintView.setSizeEraser(eraserSize);
                     params.width = dpToPx(wSizeView);
                     params.height = dpToPx(hSizeView);
                     sizeView.setLayoutParams(params);
                 }else {
                     hSizeView = wSizeView = brushSize = i + 1;
-                    statusNumber.setText(brushSize + ".0");
+                    statusNumber.setText(brushSize + " px");
                     mPaintView.setSizeBrush(brushSize);
                     params.width = dpToPx(wSizeView);
                     params.height = dpToPx(hSizeView);
@@ -383,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                sizeView.setVisibility(View.VISIBLE);
             }
 
             @Override
