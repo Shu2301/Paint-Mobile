@@ -41,7 +41,4 @@ dependencies {
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
     implementation 'com.google.android.material:material:1.9.0'
 
-    implementation 'androidx.activity:activity-ktx:1.4.0'
-    implementation 'androidx.fragment:fragment-ktx:1.4.0'
-
 }
