@@ -6,10 +6,8 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -18,10 +16,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,13 +26,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,25 +41,24 @@ import com.example.appmobileproject.widget.PaintView;
 import com.example.appmobileproject.adapters.ToolsAdapter;
 import com.example.appmobileproject.common.common;
 import com.example.appmobileproject.model.ToolsItem;
-import com.flask.colorpicker.ColorPickerView;
-import com.flask.colorpicker.builder.ColorPickerClickListener;
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+import com.jaredrummler.android.colorpicker.ColorPickerDialog;
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity implements ToolsListener {
+public class MainActivity extends AppCompatActivity implements ToolsListener, ColorPickerDialogListener {
 
     private static final int REQUEST_PERMISSION = 1001;
     private static final int REQUEST_FOR_GET_IMAGE_FROM_GALLERY = 1002;
+
+    private static final int COLOR_PICKER_DIALOG_ID = 1;
 
     private TextView statusNumber;
     private SeekBar seekBar;
@@ -78,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
     private int hSizeView, wSizeView;
 
     private ActivityResultLauncher<String> pickImageLauncher;
+
+    int defaultColor;
+    boolean isBrush;
 
 
 
@@ -99,6 +98,10 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
                 }
             }
         });
+
+
+
+        defaultColor = ContextCompat.getColor(MainActivity.this, R.color.black);
 
     }
 //
@@ -274,11 +277,13 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
                 break;
             case common.BACKGROUND:
                 updateColor(name);
-                Toast.makeText(this, "background", Toast.LENGTH_SHORT).show();
+                isBrush = false;
+                Toast.makeText(this, "choose background color", Toast.LENGTH_SHORT).show();
                 break;
             case common.COLORS:
                 updateColor(name);
-                Toast.makeText(this, "color", Toast.LENGTH_SHORT).show();
+                isBrush = true;
+                Toast.makeText(this, "choose color", Toast.LENGTH_SHORT).show();
                 break;
             case common.IMAGE:
                 if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -298,37 +303,39 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
 
     private void updateColor(String name) {
         int color;
-
-        if(name.equals(common.BACKGROUND)){
-            color = colorBackground;
-        }else {
+        if(name.equals(common.COLORS)){
             color = colorBrush;
         }
+        else {
+            color = colorBackground;
+        }
 
-        ColorPickerDialogBuilder
-                .with(this)
-                .setTitle("Choose colors")
-                .initialColor(color)
-                .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
-                .density(12)
-                .setPositiveButton("OK", new ColorPickerClickListener() {
-                    @Override
-                    public void onClick(DialogInterface d, int lastSelectedColor, Integer[] allColors) {
-                        if(name.equals(common.BACKGROUND)){
-                            colorBackground = lastSelectedColor;
-                            mPaintView.setColorBackground(colorBackground);
-                        }else {
-                            colorBrush = lastSelectedColor;
-                            mPaintView.setBrushColor(colorBrush);
-                        }
-                    }
-                }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+        ColorPickerDialog.newBuilder()
+                .setDialogId(COLOR_PICKER_DIALOG_ID)
+                .setDialogType(ColorPickerDialog.TYPE_CUSTOM)
+                .setAllowCustom(true)
+                .setShowAlphaSlider(true)
+                .setShowColorShades(true)
+                .setColor(color)
+                .show(this);
+    }
+    @Override
+    public void onColorSelected(int dialogId, int color) {
+        if (dialogId == COLOR_PICKER_DIALOG_ID) {
+            if(isBrush){
+                colorBrush = color;
+                mPaintView.setBrushColor(colorBrush);
+            }
+            else {
+                colorBackground = color;
+                mPaintView.setColorBackground(colorBackground);
+            }
+        }
+    }
 
-                    }
-                }).build()
-                    .show();
+    @Override
+    public void onDialogDismissed(int dialogId) {
+
     }
 
     private void showDialogSize(boolean isEraser){
@@ -398,5 +405,4 @@ public class MainActivity extends AppCompatActivity implements ToolsListener {
         float density = getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
     }
-
 }
